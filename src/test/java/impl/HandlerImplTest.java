@@ -5,8 +5,17 @@
  */
 package impl;
 
+import static impl.BasicSalaryCalculatorTest.array;
+import static impl.BasicSalaryCalculatorTest.hand;
 import interfaces.Actor;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -22,6 +31,9 @@ public class HandlerImplTest {
     
     public static ArrayList<Actor> array = null;
     public static HandlerImpl hand = null;
+    public static PrintWriter writer = null;
+    public static BufferedReader br = null;
+            
     
     public HandlerImplTest() {
     }
@@ -29,15 +41,29 @@ public class HandlerImplTest {
     @BeforeClass
     public static void setUpClass() {
         hand = new HandlerImpl();
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter("actors", "UTF-8");
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(BasicSalaryCalculatorTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(BasicSalaryCalculatorTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader("actors"));
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(HandlerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
         ArrayList<Actor> a = new ArrayList<>();
-        a.add(new ActorImpl("Tom Hanks",61));
-        a.add(new ActorImpl("Leonardo DiCaprio",43));
-        a.add(new ActorImpl("Tom Cruise",55));
-        a.add(new ActorImpl("Kevin Spacey",58));
-        a.add(new ActorImpl("Johnny Depp",54));
-        a.add(new ActorImpl("Brad Pitt",54));
-        hand.writeToFile(a);
-        array = hand.readFromFile();
+        a.add(new ActorImpl("Tom Hanks", 61));
+        a.add(new ActorImpl("Leonardo DiCaprio", 43));
+        a.add(new ActorImpl("Tom Cruise", 55));
+        a.add(new ActorImpl("Kevin Spacey", 58));
+        a.add(new ActorImpl("Johnny Depp", 54));
+        a.add(new ActorImpl("Brad Pitt", 54));
+        hand.writeToFile(a, writer);
+        array = hand.readFromFile(br);
         System.out.println(array.toString());
     }
     
@@ -103,7 +129,7 @@ public class HandlerImplTest {
     @Test
     public void testReadFromFile() {
         System.out.println("readFromFile");
-        ArrayList<Actor> result = hand.readFromFile();
+        ArrayList<Actor> result = hand.readFromFile(br);
         assertEquals("Tom Hanks", result.get(0).getName());
     }
 
@@ -113,8 +139,8 @@ public class HandlerImplTest {
     @Test
     public void testWriteToFile() {
         System.out.println("writeToFile");
-        hand.writeToFile(array);
-        ArrayList<Actor> result = hand.readFromFile();
+        hand.writeToFile(array, writer);
+        ArrayList<Actor> result = hand.readFromFile(br);
         assertEquals(array.get(0).getName(),result.get(0).getName());
     }
 

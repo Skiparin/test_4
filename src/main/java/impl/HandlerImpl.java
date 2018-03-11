@@ -64,14 +64,8 @@ public class HandlerImpl implements Handler {
     }
 
     @Override
-    public ArrayList<Actor> readFromFile() {
-        BufferedReader br = null;
+    public ArrayList<Actor> readFromFile(BufferedReader br) {
         ArrayList<Actor> array = new ArrayList<>();
-        try {
-            br = new BufferedReader(new FileReader("actors"));
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(HandlerImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
         try {
             String line = br.readLine();
             while (line != null) {
@@ -95,15 +89,7 @@ public class HandlerImpl implements Handler {
     }
 
     @Override
-    public void writeToFile(ArrayList<Actor> array) {
-        PrintWriter writer = null;
-        try {
-            writer = new PrintWriter("actors", "UTF-8");
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(HandlerImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(HandlerImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public void writeToFile(ArrayList<Actor> array, PrintWriter writer) {
         for (Actor a : array) {
             writer.println(a.getName() + "," + a.getAge());
         }

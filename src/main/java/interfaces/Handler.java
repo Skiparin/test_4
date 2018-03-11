@@ -5,6 +5,8 @@
  */
 package interfaces;
 
+import java.io.BufferedReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 /**
@@ -21,9 +23,9 @@ public interface Handler {
     
     public ArrayList<Actor> sortByName(ArrayList<Actor> array);
     
-    public ArrayList<Actor> readFromFile();
+    public ArrayList<Actor> readFromFile(BufferedReader br);
     
-    public void writeToFile(ArrayList<Actor> array);
+    public void writeToFile(ArrayList<Actor> array, PrintWriter writer);
     
     public boolean isOlder(Actor first, Actor second);
     
